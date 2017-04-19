@@ -10,23 +10,23 @@ Copyright (c) 2014, Rafat Hussain
 extern "C" {
 #endif
 
-int upsamp(double *x, int lenx, int M, double *y);
+int upsamp(float *x, int lenx, int M, float *y);
 
-int upsamp2(double *x, int lenx, int M, double *y);
+int upsamp2(float *x, int lenx, int M, float *y);
 
-int downsamp(double *x, int lenx, int M, double *y);
+int downsamp(float *x, int lenx, int M, float *y);
 
-int per_ext(double *sig, int len, int a,double *oup);
+int per_ext(float *sig, int len, int a,float *oup);
 
-int symm_ext(double *sig, int len, int a,double *oup);
+int symm_ext(float *sig, int len, int a,float *oup);
 
-void circshift(double *array, int N, int L);
+void circshift(float *array, int N, int L);
 
 int testSWTlength(int N, int J);
 
 int wmaxiter(int sig_len, int filt_len);
 
-double costfunc(double *x, int N, char *entropy, double p);
+float costfunc(float *x, int N, char *entropy, float p);
 
 #ifdef __cplusplus
 }

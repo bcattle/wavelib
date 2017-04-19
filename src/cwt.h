@@ -7,16 +7,16 @@
 extern "C" {
 #endif
 
-void cwavelet(double *y, int N, double dt, int mother, double param, double s0, double dj, int jtot, int npad,
-		double *wave, double *scale, double *period, double *coi);
+void cwavelet(float *y, int N, float dt, int mother, float param, float s0, float dj, int jtot, int npad,
+		float *wave, float *scale, float *period, float *coi);
 
-void psi0(int mother, double param, double *val, int *real);
+void psi0(int mother, float param, float *val, int *real);
 
-double factorial(int N);
+float factorial(int N);
 
-double cdelta(int mother, double param, double psi0);
+float cdelta(int mother, float param, float psi0);
 
-void icwavelet(double *wave, int N, double *scale, int jtot, double dt, double dj, double cdelta, double psi0, double *oup);
+void icwavelet(float *wave, int N, float *scale, int jtot, float dt, float dj, float cdelta, float psi0, float *oup);
 
 
 #ifdef __cplusplus

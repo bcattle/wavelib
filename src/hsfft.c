@@ -1498,7 +1498,7 @@ static void bluestein_fft(fft_data *data, fft_data *oup,fft_object obj,int sgn, 
 	fft_data* yno;
 	fft_data* hlt;
 	obj->lt = 0;
-	K = (int) pow(2.0,ceil((double) log10((double) N)/log10((double) 2.0)));
+	K = (int) pow(2.0,ceil((float) log10((float) N)/log10((float) 2.0)));
 	def_lt = 1;
 	def_sgn = obj->sgn;
 	def_N = obj->N;

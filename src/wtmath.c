@@ -3,7 +3,7 @@ Copyright (c) 2014, Rafat Hussain
 */
 #include "wtmath.h"
 
-int upsamp(double *x, int lenx, int M, double *y) {
+int upsamp(float *x, int lenx, int M, float *y) {
 	int N, i, j, k;
 
 	if (M < 0) {
@@ -34,7 +34,7 @@ int upsamp(double *x, int lenx, int M, double *y) {
 	return N;
 }
 
-int upsamp2(double *x, int lenx, int M, double *y) {
+int upsamp2(float *x, int lenx, int M, float *y) {
 	int N, i, j, k;
 	// upsamp2 returns even numbered output. Last value is set to zero
 	if (M < 0) {
@@ -65,7 +65,7 @@ int upsamp2(double *x, int lenx, int M, double *y) {
 	return N;
 }
 
-int downsamp(double *x, int lenx, int M, double *y) {
+int downsamp(float *x, int lenx, int M, float *y) {
 	int N, i;
 
 	if (M < 0) {
@@ -87,7 +87,7 @@ int downsamp(double *x, int lenx, int M, double *y) {
 	return N;
 }
 /*
-int per_ext(double *sig, int len, int a,double *oup) {
+int per_ext(float *sig, int len, int a,float *oup) {
 	int i,len2;
 	// oup is of length len + (len%2) + 2 * a
 	for (i = 0; i < len; ++i) {
@@ -108,10 +108,10 @@ int per_ext(double *sig, int len, int a,double *oup) {
 }
 */
 
-int per_ext(double *sig, int len, int a, double *oup) {
+int per_ext(float *sig, int len, int a, float *oup) {
 	int i, len2;
-	double temp1;
-	double temp2;
+	float temp1;
+	float temp2;
 	for (i = 0; i < len; ++i) {
 		oup[a + i] = sig[i];
 	}
@@ -129,7 +129,7 @@ int per_ext(double *sig, int len, int a, double *oup) {
 	return len2;
 }
 /*
-int symm_ext(double *sig, int len, int a, double *oup) {
+int symm_ext(float *sig, int len, int a, float *oup) {
 	int i, len2;
 	// oup is of length len + 2 * a
 	for (i = 0; i < len; ++i) {
@@ -146,10 +146,10 @@ int symm_ext(double *sig, int len, int a, double *oup) {
 }
 */
 
-int symm_ext(double *sig, int len, int a, double *oup) {
+int symm_ext(float *sig, int len, int a, float *oup) {
 	int i, len2;
-	double temp1;
-	double temp2;
+	float temp1;
+	float temp2;
 	// oup is of length len + 2 * a
 	for (i = 0; i < len; ++i) {
 		oup[a + i] = sig[i];
@@ -187,9 +187,9 @@ static int iabs(int N) {
 	}
 }
 
-void circshift(double *array, int N, int L) {
+void circshift(float *array, int N, int L) {
 	int i;
-	double *temp;
+	float *temp;
 	if (iabs(L) > N) {
 		L = isign(L) * (iabs(L) % N);
 	}
@@ -197,7 +197,7 @@ void circshift(double *array, int N, int L) {
 		L = (N + L) % N;
 	}
 
-	temp = (double*)malloc(sizeof(double) * L);
+	temp = (float*)malloc(sizeof(float) * L);
 
 	for (i = 0; i < L; ++i) {
 		temp[i] = array[i];
@@ -233,17 +233,17 @@ int testSWTlength(int N, int J) {
 
 int wmaxiter(int sig_len, int filt_len) {
 	int lev;
-	double temp;
+	float temp;
 
-	temp = log((double)sig_len / ((double)filt_len - 1.0)) / log(2.0);
+	temp = log((float)sig_len / ((float)filt_len - 1.0)) / log(2.0);
 	lev = (int)temp;
 
 	return lev;
 }
 
-static double entropy_s(double *x,int N) {
+static float entropy_s(float *x,int N) {
   int i;
-  double val,x2;
+  float val,x2;
 
   val = 0.0;
 
@@ -256,9 +256,9 @@ static double entropy_s(double *x,int N) {
   return val;
 }
 
-static double entropy_t(double *x,int N, double t) {
+static float entropy_t(float *x,int N, float t) {
   int i;
-  double val,x2;
+  float val,x2;
   if (t < 0) {
     printf("Threshold value must be >= 0");
     exit(1);
@@ -277,9 +277,9 @@ static double entropy_t(double *x,int N, double t) {
 
 }
 
-static double entropy_n(double *x,int N,double p) {
+static float entropy_n(float *x,int N,float p) {
   int i;
-  double val,x2;
+  float val,x2;
   if (p < 1) {
     printf("Norm power value must be >= 1");
     exit(1);
@@ -287,16 +287,16 @@ static double entropy_n(double *x,int N,double p) {
   val = 0.0;
   for(i = 0; i < N; ++i) {
     x2 = fabs(x[i]);
-    val += pow(x2,(double)p);
+    val += pow(x2,(float)p);
 
   }
 
   return val;
 }
 
-static double entropy_l(double *x,int N) {
+static float entropy_l(float *x,int N) {
   int i;
-  double val,x2;
+  float val,x2;
 
   val = 0.0;
 
@@ -309,8 +309,8 @@ static double entropy_l(double *x,int N) {
   return val;
 }
 
-double costfunc(double *x, int N ,char *entropy,double p) {
-	double val;
+float costfunc(float *x, int N ,char *entropy,float p) {
+	float val;
 
 	if (!strcmp(entropy, "shannon")) {
 		val = entropy_s(x, N);

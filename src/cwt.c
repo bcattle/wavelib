@@ -20,9 +20,9 @@ static int factorial2(int N) {
 	return factorial;
 }
 
-static double factorial3(int N) {
+static float factorial3(int N) {
 	int i;
-	double factorial;
+	float factorial;
 
 	factorial = 1;
 
@@ -33,12 +33,12 @@ static double factorial3(int N) {
 	return factorial;
 }
 
-double factorial(int N) {
+float factorial(int N) {
 	if (N > 40) {
 		printf("This program is only valid for N <= 40 \n");
 		return -1.0;
 	}
-	double fact[41] = { 1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800, 39916800, 479001600, 6227020800, 87178291200, 1307674368000,
+	float fact[41] = { 1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800, 39916800, 479001600, 6227020800, 87178291200, 1307674368000,
 		20922789888000, 355687428096000, 6402373705728000, 121645100408832000, 2432902008176640000, 51090942171709440000.0, 1124000727777607680000.0,
 		25852016738884976640000.0, 620448401733239439360000.0, 15511210043330985984000000.0, 403291461126605635584000000.0, 10888869450418352160768000000.0,
 		304888344611713860501504000000.0, 8841761993739701954543616000000.0, 265252859812191058636308480000000.0, 8222838654177922817725562880000000.0,
@@ -49,12 +49,12 @@ double factorial(int N) {
 	return fact[N];
 
 }
-static void wave_function(int nk, double dt,int mother, double param,double scale1, double *kwave, double pi,double *period1,
-	double *coi1, fft_data *daughter) {
+static void wave_function(int nk, float dt,int mother, float param,float scale1, float *kwave, float pi,float *period1,
+	float *coi1, fft_data *daughter) {
 
-	double norm, expnt, fourier_factor;
+	float norm, expnt, fourier_factor;
 	int k, m;
-	double temp;
+	float temp;
 	int sign,re;
 
 
@@ -84,11 +84,11 @@ static void wave_function(int nk, double dt,int mother, double param,double scal
 			param = 4.0;
 		}
 		m = (int)param;
-		norm = sqrt(2.0*pi*scale1 / dt)*(pow(2.0,(double)m) / sqrt((double)(m*factorial(2 * m - 1))));
+		norm = sqrt(2.0*pi*scale1 / dt)*(pow(2.0,(float)m) / sqrt((float)(m*factorial(2 * m - 1))));
 		for (k = 1; k <= nk / 2 + 1; ++k) {
 			temp = scale1 * kwave[k - 1];
 			expnt = - temp;
-			daughter[k - 1].re = norm * pow(temp,(double)m) * exp(expnt);
+			daughter[k - 1].re = norm * pow(temp,(float)m) * exp(expnt);
 			daughter[k - 1].im = 0.0;
 		}
 		for (k = nk / 2 + 2; k <= nk; ++k) {
@@ -119,13 +119,13 @@ static void wave_function(int nk, double dt,int mother, double param,double scal
 		}
 
 
-		norm = sqrt(2.0*pi*scale1 / dt)*sqrt(1.0 / gamma(m + 0.50));
+		norm = sqrt(2.0*pi*scale1 / dt)*sqrt(1.0 / tgammaf(m + 0.50));
 		norm *= sign;
 
 		if (re == 1) {
 			for (k = 1; k <= nk; ++k) {
 				temp = scale1 * kwave[k - 1];
-				daughter[k - 1].re = norm*pow(temp,(double)m)*exp(-0.50*pow(temp,2.0));
+				daughter[k - 1].re = norm*pow(temp,(float)m)*exp(-0.50*pow(temp,2.0));
 				daughter[k - 1].im = 0.0;
 			}
 		}
@@ -133,7 +133,7 @@ static void wave_function(int nk, double dt,int mother, double param,double scal
 			for (k = 1; k <= nk; ++k) {
 				temp = scale1 * kwave[k - 1];
 				daughter[k - 1].re = 0.0;
-				daughter[k - 1].im = norm*pow(temp, (double)m)*exp(-0.50*pow(temp, 2.0));
+				daughter[k - 1].im = norm*pow(temp, (float)m)*exp(-0.50*pow(temp, 2.0));
 			}
 		}
 		fourier_factor = (2.0*pi) * sqrt(2.0 / (2.0 * m + 1.0));
@@ -142,14 +142,14 @@ static void wave_function(int nk, double dt,int mother, double param,double scal
 	}
 }
 
-void cwavelet(double *y, int N, double dt, int mother, double param, double s0, double dj, int jtot, int npad,
-	double *wave, double *scale, double *period, double *coi) {
+void cwavelet(float *y, int N, float dt, int mother, float param, float s0, float dj, int jtot, int npad,
+	float *wave, float *scale, float *period, float *coi) {
 
 	int i, j, k, iter;
-	double ymean, freq1, pi, period1, coi1;
-	double tmp1, tmp2;
-	double scale1;
-	double *kwave;
+	float ymean, freq1, pi, period1, coi1;
+	float tmp1, tmp2;
+	float scale1;
+	float *kwave;
 	fft_object obj, iobj;
 	fft_data *ypad, *yfft,*daughter;
 
@@ -166,7 +166,7 @@ void cwavelet(double *y, int N, double dt, int mother, double param, double s0, 
 	ypad = (fft_data*)malloc(sizeof(fft_data)* npad);
 	yfft = (fft_data*)malloc(sizeof(fft_data)* npad);
 	daughter = (fft_data*)malloc(sizeof(fft_data)* npad);
-	kwave = (double*)malloc(sizeof(double)* npad);
+	kwave = (float*)malloc(sizeof(float)* npad);
 
 	ymean = 0.0;
 
@@ -191,14 +191,14 @@ void cwavelet(double *y, int N, double dt, int mother, double param, double s0, 
 	fft_exec(obj, ypad, yfft);
 
 	for (i = 0; i < npad; ++i) {
-		yfft[i].re /= (double) npad;
-		yfft[i].im /= (double) npad;
+		yfft[i].re /= (float) npad;
+		yfft[i].im /= (float) npad;
 	}
 
 
 	//Construct the wavenumber array
 
-	freq1 = 2.0*pi / ((double)npad*dt);
+	freq1 = 2.0*pi / ((float)npad*dt);
 	kwave[0] = 0.0;
 
 	for (i = 1; i < npad / 2 + 1; ++i) {
@@ -213,7 +213,7 @@ void cwavelet(double *y, int N, double dt, int mother, double param, double s0, 
 	// Main loop
 
 	for (j = 1; j <= jtot; ++j) {
-		scale1 = scale[j - 1];// = s0*pow(2.0, (double)(j - 1)*dj);
+		scale1 = scale[j - 1];// = s0*pow(2.0, (float)(j - 1)*dj);
 		wave_function(npad, dt, mother, param, scale1, kwave, pi,&period1,&coi1, daughter);
 		period[j - 1] = period1;
 		for (k = 0; k < npad; ++k) {
@@ -232,7 +232,7 @@ void cwavelet(double *y, int N, double dt, int mother, double param, double s0, 
 	
 
 	for (i = 1; i <= (N + 1) / 2; ++i) {
-		coi[i - 1] = coi1 * dt * ((double)i - 1.0);
+		coi[i - 1] = coi1 * dt * ((float)i - 1.0);
 		coi[N - i] = coi[i - 1];
 	}
 	
@@ -248,8 +248,8 @@ void cwavelet(double *y, int N, double dt, int mother, double param, double s0, 
 
 }
 
-void psi0(int mother, double param,double *val,int *real) {
-	double pi,coeff;
+void psi0(int mother, float param,float *val,int *real) {
+	float pi,coeff;
 	int m,sign;
 
 	m = (int)param;
@@ -275,7 +275,7 @@ void psi0(int mother, double param,double *val,int *real) {
 		else {
 			sign = -1;
 		}
-		*val = sign * pow(2.0, (double)m) * factorial(m) / (sqrt(pi * factorial(2 * m)));
+		*val = sign * pow(2.0, (float)m) * factorial(m) / (sqrt(pi * factorial(2 * m)));
 
 	}
 	else if (mother == 2) {
@@ -289,8 +289,8 @@ void psi0(int mother, double param,double *val,int *real) {
 			else {
 				sign = 1;
 			}
-			coeff = sign * pow(2.0, (double)m / 2) / gamma(0.5);
-			*val = coeff * gamma(((double)m + 1.0) / 2.0) / sqrt(gamma(m + 0.50));
+			coeff = sign * pow(2.0, (float)m / 2) / tgammaf(0.5);
+			*val = coeff * tgammaf(((float)m + 1.0) / 2.0) / sqrt(tgammaf(m + 0.50));
 		}
 		else {
 			*val = 0;
@@ -298,8 +298,8 @@ void psi0(int mother, double param,double *val,int *real) {
 	}
 }
 
-static int maxabs(double *array,int N) {
-	double maxval,temp;
+static int maxabs(float *array,int N) {
+	float maxval,temp;
 	int i,index;
 	maxval = 0.0;
 	index = -1;
@@ -316,11 +316,11 @@ static int maxabs(double *array,int N) {
 }
 
 
-double cdelta(int mother, double param, double psi0 ) {
+float cdelta(int mother, float param, float psi0 ) {
 	int N,i,j,iter;
-	double *delta, *scale,*period,*wave,*coi,*mval;
-	double den,cdel;
-	double subscale,dt,dj,s0;
+	float *delta, *scale,*period,*wave,*coi,*mval;
+	float den,cdel;
+	float subscale,dt,dj,s0;
 	int jtot;
 	int maxarr;
 
@@ -348,12 +348,12 @@ double cdelta(int mother, double param, double psi0 ) {
 	dj = 1.0 / subscale;
 	jtot = 16 * (int) subscale;
 
-	delta = (double*)malloc(sizeof(double)* N);
-	wave = (double*)malloc(sizeof(double)* 2 * N * jtot);
-	coi = (double*)malloc(sizeof(double)* N);
-	scale = (double*)malloc(sizeof(double)* jtot);
-	period = (double*)malloc(sizeof(double)* jtot);
-	mval = (double*)malloc(sizeof(double)* N);
+	delta = (float*)malloc(sizeof(float)* N);
+	wave = (float*)malloc(sizeof(float)* 2 * N * jtot);
+	coi = (float*)malloc(sizeof(float)* N);
+	scale = (float*)malloc(sizeof(float)* jtot);
+	period = (float*)malloc(sizeof(float)* jtot);
+	mval = (float*)malloc(sizeof(float)* N);
 
 
 	delta[0] = 1;
@@ -363,7 +363,7 @@ double cdelta(int mother, double param, double psi0 ) {
 	}
 
 	for (i = 0; i < jtot; ++i) {
-		scale[i] = s0*pow(2.0, (double)(i)*dj);
+		scale[i] = s0*pow(2.0, (float)(i)*dj);
 	}
 
 	cwavelet(delta, N, dt, mother, param, s0, dj, jtot, N, wave, scale, period, coi);
@@ -396,9 +396,9 @@ double cdelta(int mother, double param, double psi0 ) {
 	return cdel;
 }
 
-void icwavelet(double *wave, int N, double *scale,int jtot,double dt,double dj,double cdelta,double psi0,double *oup) {
+void icwavelet(float *wave, int N, float *scale,int jtot,float dt,float dj,float cdelta,float psi0,float *oup) {
 	int i, j,iter;
-	double den, coeff;
+	float den, coeff;
 
 	coeff = sqrt(dt) * dj / (cdelta *psi0);
 

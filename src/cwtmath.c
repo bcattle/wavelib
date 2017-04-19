@@ -1,13 +1,13 @@
 #include "cwtmath.h"
 
-static void nsfft_fd(fft_object obj, fft_data *inp, fft_data *oup,double lb,double ub,double *w) {
+static void nsfft_fd(fft_object obj, fft_data *inp, fft_data *oup,float lb,float ub,float *w) {
 	int M,N,i,j,L;
-	double delta,den,theta,tempr,tempi,plb;
-	double *temp1,*temp2;
+	float delta,den,theta,tempr,tempi,plb;
+	float *temp1,*temp2;
 
 	N = obj->N;
 	L = N/2;
-	//w = (double*)malloc(sizeof(double)*N);
+	//w = (float*)malloc(sizeof(float)*N);
 	
 	M = divideby(N, 2);
 	
@@ -16,15 +16,15 @@ static void nsfft_fd(fft_object obj, fft_data *inp, fft_data *oup,double lb,doub
 		exit(1);
 	}
 	
-	temp1 = (double*)malloc(sizeof(double)*L);
-	temp2 = (double*)malloc(sizeof(double)*L);
+	temp1 = (float*)malloc(sizeof(float)*L);
+	temp2 = (float*)malloc(sizeof(float)*L);
 	
 	delta = (ub - lb)/ N;
 	j = -N;
 	den = 2 * (ub-lb);
 	
 	for(i = 0; i < N;++i) {
-		w[i] = (double)j/den;
+		w[i] = (float)j/den;
 		j += 2;
 	}
 	
@@ -63,11 +63,11 @@ static void nsfft_fd(fft_object obj, fft_data *inp, fft_data *oup,double lb,doub
 	free(temp2);
 }
 
-static void nsfft_bk(fft_object obj, fft_data *inp, fft_data *oup,double lb,double ub,double *t) {
+static void nsfft_bk(fft_object obj, fft_data *inp, fft_data *oup,float lb,float ub,float *t) {
 	int M,N,i,j,L;
-	double *w;
-	double delta,den,plb,theta;
-	double *temp1,*temp2;
+	float *w;
+	float delta,den,plb,theta;
+	float *temp1,*temp2;
 	fft_data *inpt;
 
 	N = obj->N;
@@ -80,9 +80,9 @@ static void nsfft_bk(fft_object obj, fft_data *inp, fft_data *oup,double lb,doub
 		exit(1);
 	}
 	
-	temp1 = (double*)malloc(sizeof(double)*L);
-	temp2 = (double*)malloc(sizeof(double)*L);
-	w = (double*)malloc(sizeof(double)*N);
+	temp1 = (float*)malloc(sizeof(float)*L);
+	temp2 = (float*)malloc(sizeof(float)*L);
+	w = (float*)malloc(sizeof(float)*N);
 	inpt = (fft_data*) malloc (sizeof(fft_data) * N);
 	
 	delta = (ub - lb)/ N;
@@ -90,7 +90,7 @@ static void nsfft_bk(fft_object obj, fft_data *inp, fft_data *oup,double lb,doub
 	den = 2 * (ub-lb);
 	
 	for(i = 0; i < N;++i) {
-		w[i] = (double)j/den;
+		w[i] = (float)j/den;
 		j += 2;
 	}
 	
@@ -130,7 +130,7 @@ static void nsfft_bk(fft_object obj, fft_data *inp, fft_data *oup,double lb,doub
 	free(inpt);
 }
 
-void nsfft_exec(fft_object obj, fft_data *inp, fft_data *oup,double lb,double ub,double *w) {
+void nsfft_exec(fft_object obj, fft_data *inp, fft_data *oup,float lb,float ub,float *w) {
 	if (obj->sgn == 1) {
 		nsfft_fd(obj,inp,oup,lb,ub,w);
 	} else if (obj->sgn == -1) {
@@ -138,7 +138,7 @@ void nsfft_exec(fft_object obj, fft_data *inp, fft_data *oup,double lb,double ub
 	}
 }
 
-static double fix(double x) {
+static float fix(float x) {
 	// Rounds to the integer nearest to zero 
 	if (x >= 0.) {
 		return floor(x);
@@ -147,7 +147,7 @@ static double fix(double x) {
 	}
 }
 
-int nint(double N) {
+int nint(float N) {
 	int i;
 
 	i = (int)(N + 0.49999);

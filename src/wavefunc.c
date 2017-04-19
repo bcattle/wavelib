@@ -1,11 +1,11 @@
 #include "wavefunc.h"
 
-void meyer(int N,double lb,double ub,double *phi,double *psi,double *tgrid) {
+void meyer(int N,float lb,float ub,float *phi,float *psi,float *tgrid) {
 	int M,i;
-	double *w;
-	double delta,j;
-	double theta,x,x2,x3,x4,v,cs,sn;
-	double wf;
+	float *w;
+	float delta,j;
+	float theta,x,x2,x3,x4,v,cs,sn;
+	float wf;
 	fft_data *phiw,*psiw,*oup;
 	fft_object obj;
 	
@@ -21,14 +21,14 @@ void meyer(int N,double lb,double ub,double *phi,double *psi,double *tgrid) {
 	}
 	
 	obj = fft_init(N,-1);
-	w = (double*)malloc(sizeof(double)*N);
+	w = (float*)malloc(sizeof(float)*N);
 	phiw = (fft_data*) malloc (sizeof(fft_data) * N);
 	psiw = (fft_data*) malloc (sizeof(fft_data) * N);
 	oup = (fft_data*) malloc (sizeof(fft_data) * N);
 	
 	delta = 2 * (ub-lb) / PI2;
 	
-	j = (double) N;
+	j = (float) N;
 	j *= -1.0;
 	
 	for(i = 0; i < N;++i) {
@@ -95,8 +95,8 @@ void meyer(int N,double lb,double ub,double *phi,double *psi,double *tgrid) {
 	free(w);
 }
 
-void gauss(int N,int p,double lb,double ub,double *psi,double *t) {
-  double delta,num,den,t2,t4;
+void gauss(int N,int p,float lb,float ub,float *psi,float *t) {
+  float delta,num,den,t2,t4;
 	int i;
 	
 	if (lb >= ub) {
@@ -111,7 +111,7 @@ void gauss(int N,int p,double lb,double ub,double *psi,double *t) {
 		t[i] = lb + delta * i;
 	}
 	
-	den = sqrt(gamma(p+0.5));
+	den = sqrt(tgammaf(p+0.5));
 	
 	if ((p+1)%2 == 0) {
 		num = 1.0;
@@ -184,13 +184,13 @@ void gauss(int N,int p,double lb,double ub,double *psi,double *t) {
 	
 }
 
-void mexhat(int N,double lb,double ub,double *psi,double *t) {
+void mexhat(int N,float lb,float ub,float *psi,float *t) {
   gauss(N,2,lb,ub,psi,t);
 }
 
-void morlet(int N,double lb,double ub,double *psi,double *t) {
+void morlet(int N,float lb,float ub,float *psi,float *t) {
        int i;
-       double delta;
+       float delta;
 
   	if (lb >= ub) {
 		printf("upper bound must be greater than lower bound");

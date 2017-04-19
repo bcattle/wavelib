@@ -22,8 +22,8 @@ namespace patch
     }
 }
 
-double absmax(double *array, int N) {
-	double max;
+float absmax(float *array, int N) {
+	float max;
 	int i;
 
 	max = 0.0;
@@ -36,8 +36,8 @@ double absmax(double *array, int N) {
 	return max;
 }
 
-double sum1(double *array, int N) {
-    double sum;
+float sum1(float *array, int N) {
+    float sum;
     int i;
 
     sum = 0.0;
@@ -46,8 +46,8 @@ double sum1(double *array, int N) {
     }
     return sum;
 }
-double sum2(double *array, int N) {
-    double sum;
+float sum2(float *array, int N) {
+    float sum;
     int i;
 
     sum = 0.0;
@@ -56,8 +56,8 @@ double sum2(double *array, int N) {
     }
     return sum;
 }
-double sum3(double *array, int N) {
-    double sum;
+float sum3(float *array, int N) {
+    float sum;
     int i;
 
     sum = 0.0;
@@ -67,8 +67,8 @@ double sum3(double *array, int N) {
     return sum;
 }
 //np.sum(w[2*m:(2*N+2*m)]*w[0:2*N])
-double sum4(double *array, int N) {
-    double sum;
+float sum4(float *array, int N) {
+    float sum;
     int i;
 
     sum = 0.0;
@@ -78,8 +78,8 @@ double sum4(double *array, int N) {
     return sum;
 }
 //np.sum(w[2 * m:(2 * N)] * w[0:2 * N - 2 * m])
-double sum5(double *array, int N,int m) {
-    double sum;
+float sum5(float *array, int N,int m) {
+    float sum;
     int i;
 
     sum = 0.0;
@@ -89,19 +89,19 @@ double sum5(double *array, int N,int m) {
     return sum;
 }
 
-double RMS_Error(double *data, double *rec, int N) {
+float RMS_Error(float *data, float *rec, int N) {
     int i;
-    double sum = 0;
+    float sum = 0;
     for (i = 0; i < N; ++i) {
         sum += (data[i] - rec[i])*(data[i] - rec[i]);
     }
-    return sqrt(sum/((double)N-1));
+    return sqrt(sum/((float)N-1));
 }
 
-double REL_Error(double *data, double *rec, int N) {
+float REL_Error(float *data, float *rec, int N) {
     int i;
-    double sum1 = 0;
-    double sum2 = 0;
+    float sum1 = 0;
+    float sum2 = 0;
     for (i = 0; i < N; ++i) {
         sum1 += (data[i] - rec[i])*(data[i] - rec[i]);
         sum2 += data[i] * data[i];
@@ -114,21 +114,21 @@ void ReconstructionTest()
 
 	wave_object obj;
 	wt_object wt;
-	double *inp,*out;
+	float *inp,*out;
 	int N, i,J;
-    double epsilon = 1e-15;
+    float epsilon = 1e-15;
     char *type = (char*) "dwt";
 
     N = 79926;
     
     //N = 256;
 
-	inp = (double*)malloc(sizeof(double)* N);
-	out = (double*)malloc(sizeof(double)* N);
+	inp = (float*)malloc(sizeof(float)* N);
+	out = (float*)malloc(sizeof(float)* N);
 	//wmean = mean(temp, N);
 
 	for (i = 0; i < N; ++i) {
-        inp[i] = (rand() / (double)(RAND_MAX));
+        inp[i] = (rand() / (float)(RAND_MAX));
 	}
     std::vector<std::string > waveletNames;
 
@@ -233,20 +233,20 @@ void DWPTReconstructionTest()
 
 	wave_object obj;
 	wpt_object wt;
-	double *inp,*out;
+	float *inp,*out;
 	int N, i,J;
-    double epsilon = 1e-8;
+    float epsilon = 1e-8;
 
     N = 79926;
     
     //N = 256;
 
-	inp = (double*)malloc(sizeof(double)* N);
-	out = (double*)malloc(sizeof(double)* N);
+	inp = (float*)malloc(sizeof(float)* N);
+	out = (float*)malloc(sizeof(float)* N);
 	//wmean = mean(temp, N);
 
 	for (i = 0; i < N; ++i) {
-        inp[i] = (rand() / (double)(RAND_MAX));
+        inp[i] = (rand() / (float)(RAND_MAX));
 	}
     std::vector<std::string > waveletNames;
 
@@ -347,9 +347,9 @@ void DWPTReconstructionTest()
 
 void CWTReconstructionTest() {
 	int i, j,N, J,subscale,a0,iter;
-	double *inp,*oup;
-	double dt, dj,s0, pi,t;
-	double val, epsilon;
+	float *inp,*oup;
+	float dt, dj,s0, pi,t;
+	float val, epsilon;
 	int it1,it2;
 	cwt_object wt;
 	
@@ -358,7 +358,7 @@ void CWTReconstructionTest() {
 	wave[0] = (char*) "morl";
 	wave[1] =(char*) "paul";
 	wave[2] = (char*) "dog";
-	double param[30] = {4.5,5,5.5,6,6.5,8,10,13,17,20,
+	float param[30] = {4.5,5,5.5,6,6.5,8,10,13,17,20,
 		4,5,7,8,10,12,13,14,17,20,2,4,6,8,10,12,14,16,18,20};
 	char *type = (char*) "pow";
 	
@@ -366,14 +366,14 @@ void CWTReconstructionTest() {
 	N = 2048;
 	dt = 0.000125;
 	subscale = 20;
-	dj = 1.0 / (double) subscale;
+	dj = 1.0 / (float) subscale;
 	s0 = dt/32;	
 	J = 32 * subscale;
 	a0 = 2;//power
 	
 
-	inp = (double*)malloc(sizeof(double)* N);
-	oup = (double*)malloc(sizeof(double)* N);
+	inp = (float*)malloc(sizeof(float)* N);
+	oup = (float*)malloc(sizeof(float)* N);
 	
 	pi = 4.0 * atan(1.0);
 
@@ -420,8 +420,8 @@ void CWTReconstructionTest() {
 void DBCoefTests()
 {
     wave_object obj;
-    double epsilon = 1e-15;
-    double t1,t2,t3,t4,t5;
+    float epsilon = 1e-15;
+    float t1,t2,t3,t4,t5;
     std::vector<std::string > waveletNames;
     waveletNames.resize(38);
     for (unsigned int i = 0; i < waveletNames.size();i++)
@@ -460,8 +460,8 @@ void DBCoefTests()
 void CoifCoefTests()
 {
     wave_object obj;
-    double epsilon = 1e-15;
-    double t1,t2,t3,t4,t5;
+    float epsilon = 1e-15;
+    float t1,t2,t3,t4,t5;
     std::vector<std::string > waveletNames;
     waveletNames.resize(17);
     for (unsigned int i = 0; i < waveletNames.size(); i++)
@@ -499,8 +499,8 @@ void CoifCoefTests()
 void SymCoefTests()
 {
     wave_object obj;
-    double epsilon = 1e-10;
-    double t1,t2,t3,t4,t5;
+    float epsilon = 1e-10;
+    float t1,t2,t3,t4,t5;
     std::vector<std::string > waveletNames;
     for (unsigned int i = 1; i < 20; i++)
     {
@@ -537,8 +537,8 @@ void SymCoefTests()
 void BiorCoefTests()
 {
     wave_object obj;
-    double epsilon = 1e-10;
-    double t1,t2,t3,t4,t5,t6;
+    float epsilon = 1e-10;
+    float t1,t2,t3,t4,t5,t6;
     std::vector<std::string > waveletNames;
     waveletNames.push_back("bior1.1");
     waveletNames.push_back("bior1.3");
@@ -585,8 +585,8 @@ void BiorCoefTests()
 void RBiorCoefTests()
 {
     wave_object obj;
-    double epsilon = 1e-10;
-    double t1,t2,t3,t4,t5,t6;
+    float epsilon = 1e-10;
+    float t1,t2,t3,t4,t5,t6;
     std::vector<std::string > waveletNames;
     waveletNames.push_back("rbior1.1");
     waveletNames.push_back("rbior1.3");

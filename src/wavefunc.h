@@ -7,13 +7,13 @@
 extern "C" {
 #endif
 
-void meyer(int N,double lb,double ub,double *phi,double *psi,double *tgrid);
+void meyer(int N,float lb,float ub,float *phi,float *psi,float *tgrid);
 
-void gauss(int N,int p,double lb,double ub,double *psi,double *t);
+void gauss(int N,int p,float lb,float ub,float *psi,float *t);
 
-void mexhat(int N,double lb,double ub,double *psi,double *t);
+void mexhat(int N,float lb,float ub,float *psi,float *t);
 
-void morlet(int N,double lb,double ub,double *psi,double *t);  
+void morlet(int N,float lb,float ub,float *psi,float *t);  
 
 
 #ifdef __cplusplus

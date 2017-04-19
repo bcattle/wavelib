@@ -17,7 +17,7 @@ extern "C" {
 #endif
 
 #ifndef cplx_type
-#define cplx_type double
+#define cplx_type float
 #endif
 
 
@@ -37,11 +37,11 @@ struct wave_set{
 	int hpd_len;
 	int lpr_len;
 	int hpr_len;
-	double *lpd;
-	double *hpd;
-	double *lpr;
-	double *hpr;
-	double params[0];
+	float *lpd;
+	float *hpd;
+	float *lpr;
+	float *hpr;
+	float params[0];
 };
 
 typedef struct wt_set* wt_object;
@@ -65,8 +65,8 @@ struct wt_set{
 	int cfftset;
 	int zpad;
 	int length[102];
-	double *output;
-	double params[0];
+	float *output;
+	float params[0];
 };
 
 typedef struct wtree_set* wtree_object;
@@ -90,10 +90,10 @@ struct wtree_set{
 	int cfftset;
 	int zpad;
 	int length[102];
-	double *output;
+	float *output;
 	int *nodelength;
 	int *coeflength;
-	double params[0];
+	float params[0];
 };
 
 typedef struct wpt_set* wpt_object;
@@ -111,65 +111,65 @@ struct wpt_set{
 	int even;// even = 1 if signal is of even length. even = 0 otherwise
 	char ext[10];// Type of Extension used - "per" or "sym"
 	char entropy[20];
-	double eparam;
+	float eparam;
 
 	int N; //
 	int nodes;
 	int length[102];
-	double *output;
-	double *costvalues;
-	double *basisvector;
+	float *output;
+	float *costvalues;
+	float *basisvector;
 	int *nodeindex;
 	int *numnodeslevel;
 	int *coeflength;
-	double params[0];
+	float params[0];
 };
 
 typedef struct cwt_set* cwt_object;
 
-cwt_object cwt_init(char* wave, double param, int siglength,double dt, int J);
+cwt_object cwt_init(char* wave, float param, int siglength,float dt, int J);
 
 struct cwt_set{
 	char wave[10];// Wavelet - morl/morlet,paul,dog/dgauss
 	int siglength;// Length of Input Data
 	int J;// Total Number of Scales
-	double s0;// Smallest scale. It depends on the sampling rate. s0 <= 2 * dt for most wavelets
-	double dt;// Sampling Rate
-	double dj;// Separation between scales. eg., scale = s0 * 2 ^ ( [0:N-1] *dj ) or scale = s0 *[0:N-1] * dj
+	float s0;// Smallest scale. It depends on the sampling rate. s0 <= 2 * dt for most wavelets
+	float dt;// Sampling Rate
+	float dj;// Separation between scales. eg., scale = s0 * 2 ^ ( [0:N-1] *dj ) or scale = s0 *[0:N-1] * dj
 	char type[10];// Scale Type - Power or Linear
 	int pow;// Base of Power in case type = pow. Typical value is pow = 2
 	int sflag;
 	int pflag;
 	int npad;
 	int mother;
-	double m;// Wavelet parameter param
-	double smean;// Input Signal mean
+	float m;// Wavelet parameter param
+	float smean;// Input Signal mean
 
 	cplx_data *output;
-	double *scale;
-	double *period;
-	double *coi;
-	double params[0];
+	float *scale;
+	float *period;
+	float *coi;
+	float params[0];
 };
 
 
-void dwt(wt_object wt, double *inp);
+void dwt(wt_object wt, float *inp);
 
-void idwt(wt_object wt, double *dwtop);
+void idwt(wt_object wt, float *dwtop);
 
-void wtree(wtree_object wt, double *inp);
+void wtree(wtree_object wt, float *inp);
 
-void dwpt(wpt_object wt, double *inp);
+void dwpt(wpt_object wt, float *inp);
 
-void idwpt(wpt_object wt, double *dwtop);
+void idwpt(wpt_object wt, float *dwtop);
 
-void swt(wt_object wt, double *inp);
+void swt(wt_object wt, float *inp);
 
-void iswt(wt_object wt, double *swtop);
+void iswt(wt_object wt, float *swtop);
 
-void modwt(wt_object wt, double *inp);
+void modwt(wt_object wt, float *inp);
 
-void imodwt(wt_object wt, double *dwtop);
+void imodwt(wt_object wt, float *dwtop);
 
 void setDWTExtension(wt_object wt, char *extension);
 
@@ -177,27 +177,27 @@ void setWTREEExtension(wtree_object wt, char *extension);
 
 void setDWPTExtension(wpt_object wt, char *extension);
 
-void setDWPTEntropy(wpt_object wt, char *entropy, double eparam);
+void setDWPTEntropy(wpt_object wt, char *entropy, float eparam);
 
 void setWTConv(wt_object wt, char *cmethod);
 
 int getWTREENodelength(wtree_object wt, int X);
 
-void getWTREECoeffs(wtree_object wt, int X, int Y, double *coeffs, int N);
+void getWTREECoeffs(wtree_object wt, int X, int Y, float *coeffs, int N);
 
 int getDWPTNodelength(wpt_object wt, int X);
 
-void getDWPTCoeffs(wpt_object wt, int X, int Y, double *coeffs, int N);
+void getDWPTCoeffs(wpt_object wt, int X, int Y, float *coeffs, int N);
 
-void setCWTScales(cwt_object wt, double s0, double dj, char *type, int power);
+void setCWTScales(cwt_object wt, float s0, float dj, char *type, int power);
 
-void setCWTScaleVector(cwt_object wt, double *scale, int J, double s0, double dj);
+void setCWTScaleVector(cwt_object wt, float *scale, int J, float s0, float dj);
 
 void setCWTPadding(cwt_object wt, int pad);
 
-void cwt(cwt_object wt, double *inp);
+void cwt(cwt_object wt, float *inp);
 
-void icwt(cwt_object wt, double *cwtop);
+void icwt(cwt_object wt, float *cwtop);
 
 int getCWTScaleLength(int N);
 
