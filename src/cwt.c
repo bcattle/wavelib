@@ -8,6 +8,7 @@ C. Torrence and G. Compo, and is available at URL: http://atoc.colorado.edu/rese
 
 #include "cwt.h"
 
+#if 0 //not used -> dead code
 static int factorial2(int N) {
 	int factorial,i;
 
@@ -32,6 +33,7 @@ static float factorial3(int N) {
 
 	return factorial;
 }
+#endif
 
 float factorial(int N) {
 	if (N > 40) {
