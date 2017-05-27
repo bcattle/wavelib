@@ -1,0 +1,33 @@
+
+OPTIMIZE=1
+
+PREFIX = $(PWD)/../test-install
+
+ifdef OPTIMIZE
+CFLAGS = -g -O3
+else
+CFLAGS = -g
+endif
+
+all: libwavelib.so.1
+	
+libwavelib.so.1:
+	cd src ; \
+	gcc -fPIC $(CFLAGS) -c *.c ; \
+	gcc -shared -Wl,-soname,libwavelib.so.1 -o libwavelib.so.1.0 *.o
+	
+
+install:
+	cd src ; \
+	install libwavelib.so.1.0 $(PREFIX)/lib ; \
+	( cd $(PREFIX)/lib ; ln -s libwavelib.so.1.0 libwavelib.so.1 ; ln -s libwavelib.so.1.0 libwavelib.so ) ; \
+	install wavelib.h $(PREFIX)/include/wavelib ; \
+	install wtmath.h $(PREFIX)/include/wavelib ; \
+	install wavefilt.h $(PREFIX)/include/wavelib ; \
+	install conv.h $(PREFIX)/include/wavelib ; \
+	install real.h $(PREFIX)/include/wavelib ; \
+	install hsfft.h $(PREFIX)/include/wavelib ; \
+	install cwt.h $(PREFIX)/include/wavelib ; \
+	install wavefunc.h $(PREFIX)/include/wavelib ; \
+	install cwtmath.h $(PREFIX)/include/wavelib
+
